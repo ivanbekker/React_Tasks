@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import '../App.css';
 import Moment from 'react-moment';
 
@@ -30,7 +31,7 @@ class Task extends Component {
     super();
     this.state = {
       isChangeName: false,
-      name: props.task.name,
+      task: props.task,
     };
   }
 
@@ -48,23 +49,22 @@ class Task extends Component {
 
   back = () => this.props.back()
 
-  save = () => this.props.save()
+  save = () => this.props.save(this.state.task)
 
   render() {
-    const { task } = this.props;
-    const { isChangeName, name } = this.state;
+    const { isChangeName, task } = this.state;
 
     return (
       <div>
-        <p className="InputTaskName">Task Name:
+        <p style={{ display: 'flex' }}>Task Name:
           {isChangeName
             ? (
               <div className="InputTaskName">
-                <input type="text" value={name} onChange={(event) => this.setState({ name: event.target.value })} />
+                <input type="text" value={task.name} onChange={(event) => this.setState({ task: { ...task, name: event.target.value }})} />
                 <button onClick={this.saveName}>Save</button>
               </div>
               )
-            : <p style={{ margin: 0 }} onClick={this.changeName}>{name}</p>
+            : <p className="InputTaskName" style={{ margin: 0 }} onClick={this.changeName}>{task.name}</p>
           }
         </p>
         {task.tags
